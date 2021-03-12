@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "mainmenuwidget.h"
+#include "dbadapter.h"
+#include "itemfactory.h"
+#include "item.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,6 +17,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     setAcceptDrops(true);
     on_pbMainMenu_clicked();
+
+    DBAdapter* adapter = DBAdapter::getInstance();
+    QStringList typeList = adapter->getAllItemTypes();
+    for(auto& type : typeList) {
+        Item* ptr = ItemFactory::createItem(type, ui->wRight);
+        if (nullptr != ptr) {
+            if (nullptr != ui->wRight->layout()) {
+                ui->wRight->layout()->addWidget(ptr);
+            }
+        }
+    }
+
+    //QPixmap pixmap(ui->lbApple->getImagePath());
+    //ui->lbApple->setPixmap(pixmap);
 }
 
 MainWindow::~MainWindow() {
