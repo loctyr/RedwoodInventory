@@ -56,7 +56,7 @@ void Item::mousePressEvent(QMouseEvent *event) {
 
     QDrag *drag = new QDrag(this);
     drag->setPixmap(QPixmap(this->getImagePath()));
-    drag->setHotSpot(QPoint(event->pos().x(), event->pos().y() - this->geometry().center().y() + drag->pixmap().size().height()/2));
+    drag->setHotSpot(event->pos());
     drag->setMimeData(mimeData);
 
     if (!(drag->exec(Qt::MoveAction) == Qt::MoveAction))

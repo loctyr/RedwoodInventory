@@ -11,8 +11,11 @@ CONFIG += c++11
 SOURCES += \
     appleitem.cpp \
     dbadapter.cpp \
+    inventory.cpp \
+    inventorycell.cpp \
     item.cpp \
     itemfactory.cpp \
+    itemrecord.cpp \
     main.cpp \
     mainwindow.cpp \
     mainmenuwidget.cpp
@@ -20,8 +23,11 @@ SOURCES += \
 HEADERS += \
     appleitem.h \
     dbadapter.h \
+    inventory.h \
+    inventorycell.h \
     item.h \
     itemfactory.h \
+    itemrecord.h \
     mainwindow.h \
     mainmenuwidget.h
 

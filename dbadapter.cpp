@@ -4,7 +4,7 @@ DBAdapter* DBAdapter::singleton= nullptr;;
 
 DBAdapter::DBAdapter() {
     sqliteDataBase = QSqlDatabase::addDatabase("QSQLITE");
-    sqliteDataBase.setDatabaseName("mydatabase.sqlite");
+    sqliteDataBase.setDatabaseName("inventory.sqlite");
     if (!sqliteDataBase.open()) {
         qDebug() << sqliteDataBase.lastError().text();
     }
@@ -35,12 +35,6 @@ bool DBAdapter::isOpen() {
     return this->sqliteDataBase.isOpen();
 }
 
-QSqlQuery* DBAdapter::exec(QString sqlRequest) {
-    QSqlQuery* currentQuerry = new QSqlQuery();
-    currentQuerry->exec(sqlRequest);
-    return currentQuerry;
-}
-
 void DBAdapter::init() {
     QSqlQuery query = QSqlQuery(sqliteDataBase);
     query.exec("CREATE TABLE IF NOT EXISTS itemTable (picture VARCHAR(255), type VARCHAR(255) NOT NULL, sound VARCHAR(255), PRIMARY KEY(type))");
@@ -48,17 +42,13 @@ void DBAdapter::init() {
     query.exec("INSERT INTO itemTable (picture, type, sound) VALUES (\":/images/apple.jpg\", \"Apple\", \":/sound/apple.mp3\");");
 }
 
-QSqlQuery* DBAdapter::getConnection() {
-    return new QSqlQuery();
-}
-
 QString DBAdapter::getSoundPath(QString type) {
-    DBAdapter* adapter = DBAdapter::getInstance();
+    DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
     query.exec("SELECT sound from itemTable WHERE type = \'" + type + "\';");
     QString soundPath;
     if (query.first()) {
-        soundPath = query.value(0).toString();
+        soundPath = query.value("sound").toString();
     }
     return soundPath;
 }
@@ -66,10 +56,10 @@ QString DBAdapter::getSoundPath(QString type) {
 QString DBAdapter::getImagePath(QString type) {
     DBAdapter* adapter = DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
-    query.exec("SELECT picture from itemTable WHERE type = \'" + type + "\';");
+    query.exec("SELECT picture FROM itemTable WHERE type = \'" + type + "\';");
     QString imagePath;
     if (query.first()) {
-        imagePath = query.value(0).toString();
+        imagePath = query.value("picture").toString();
     }
     return imagePath;
 }
@@ -77,11 +67,35 @@ QString DBAdapter::getImagePath(QString type) {
 QStringList DBAdapter::getAllItemTypes() {
     QStringList list;
 
-    DBAdapter* adapter = DBAdapter::getInstance();
+    DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
     query.exec("SELECT type from itemTable;");
     while(query.next()) {
-        list.append(query.value(0).toString());
+        list.append(query.value("type").toString());
     }
     return list;
+}
+
+QList<ItemRecord> DBAdapter::getInventory() {
+    QList<ItemRecord> result;
+    DBAdapter::getInstance();
+    QSqlQuery query(sqliteDataBase) ;
+    if (query.exec("SELECT id, type, count FROM inventoryTable")) {
+        return result;
+    }
+    while (query.next()) {
+        result.push_back({query.value("id").toInt(),query.value("type").toString(),query.value("count").toInt()});
+    }
+
+    return result;
+}
+
+bool DBAdapter::insertOrUpdateInventory(QString type, int count, int id) {
+    DBAdapter::getInstance();
+    QSqlQuery query(sqliteDataBase) ;
+    if (!query.exec("UPDATE inventoryTable SET type = \'" + type + "\', count = " + QString::number(count) + "\' WHERE id = " + QString::number(id) + ";")) {
+        if (!query.exec("INSERT INTO inventoryTable (id, type, count) VALUES (" + QString::number(id) + ", \'" + type + "\', " + QString::number(count) + ");")) {
+            return false;
+        }
+    }
 }

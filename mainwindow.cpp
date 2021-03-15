@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
     }
+    ui->twInventory->acceptDrops();
 
     //QPixmap pixmap(ui->lbApple->getImagePath());
     //ui->lbApple->setPixmap(pixmap);

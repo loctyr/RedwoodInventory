@@ -7,6 +7,6 @@ AppleItem::AppleItem(QWidget* parent) : Item("Apple", parent) {
 
 void AppleItem::removeAction() {
     QMediaPlayer* player = new QMediaPlayer();
-    player->setMedia(QMediaContent(QUrl::fromLocalFile(this->getSoundPath())));
+    player->setMedia(QMediaContent(QUrl::fromLocalFile(getSoundPath())));
     player->play();
 }
