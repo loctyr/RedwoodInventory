@@ -34,7 +34,16 @@ public:
      */
     QString getImage();
 
+    /**
+     * @brief isEnabled - Returns true if this cell enabled; otherwise returns false.
+     * @return - true if this cell enabled; otherwise false.
+     */
     bool isEnabled() const;
+
+    /**
+     * @brief setEnabled - Set cell is enabled.
+     * @param value - enable state
+     */
     void setEnabled(bool value);
 
     /**

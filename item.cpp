@@ -6,7 +6,7 @@ Item::Item(QString type_, QWidget *parent) : QLabel(parent), type(type_) {
 }
 
 QString Item::getType() {
-    return this->type;
+    return type;
 }
 
 QString Item::getImagePath() {
@@ -49,13 +49,13 @@ void Item::mousePressEvent(QMouseEvent *event) {
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
     int count = 1;
-    dataStream << QString("source") << count << this->getType();
+    dataStream << QString("source") << count << getType();
 
     QMimeData *mimeData = new QMimeData();
     mimeData->setData("text/csv", itemData);
 
     QDrag *drag = new QDrag(this);
-    drag->setPixmap(QPixmap(this->getImagePath()));
+    drag->setPixmap(QPixmap(getImagePath()));
     drag->setHotSpot(event->pos());
     drag->setMimeData(mimeData);
 

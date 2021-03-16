@@ -94,7 +94,7 @@ void InventoryCell::setEnabled(bool value) {
 }
 
 bool InventoryCell::adding(InventoryCell *cell) {
-    if (this->getType() == cell->getType()) {
+    if (getType() == cell->getType()) {
         increase(cell->getCount());
         cell->itemCount = 0;
         delete cell->item;

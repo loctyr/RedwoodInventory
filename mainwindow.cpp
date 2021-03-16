@@ -37,12 +37,12 @@ MainWindow::~MainWindow() {
 
 void MainWindow::on_newGameButton_clicked() {
     mainMenuWidget->close();
-    this->setEnabled(true);
+    setEnabled(true);
     ui->twInventory->newGame();
 }
 
 void MainWindow::on_exitButton_clicked() {
-    this->close();
+    close();
 }
 
 void MainWindow::on_pbMainMenu_clicked() {
@@ -61,7 +61,7 @@ void MainWindow::resizeEvent(QResizeEvent */*event*/) {
 }
 
 void MainWindow::setMainMenuGeometry() {
-    QRect parentRect = this->geometry();
+    QRect parentRect = geometry();
     mainMenuWidget->resize(parentRect.width(), 25);
     mainMenuWidget->move(parentRect.left(), parentRect.top());
 }

@@ -65,7 +65,7 @@ void Inventory::dragMoveEvent(QDragMoveEvent *event) {
             }
         }
     }
-    this->repaintAllCells();
+    repaintAllCells();
     if (target.x() >= 0) {
         getCell(target.x(), target.y())->setBackgroundColor(QColor(100, 100, 255, 100));
     }
@@ -81,10 +81,10 @@ void Inventory::dropEvent(QDropEvent *event) {
         if (message ==  "from inventory") {
             QPoint sourceCell;
             dataStream >> sourceCell;
-            QPoint targetCell = this->getIndex(event->pos());
+            QPoint targetCell = getIndex(event->pos());
             if (targetCell.x() >= 0) {
                 if (!((targetCell.x() == sourceCell.x()) && (targetCell.y() == sourceCell.y()))) {
-                    this->getCell(targetCell.x(), targetCell.y())->adding(this->getCell(sourceCell.x(), sourceCell.y()));
+                    getCell(targetCell.x(), targetCell.y())->adding(getCell(sourceCell.x(), sourceCell.y()));
                     refreshCell(targetCell.x(), targetCell.y());
                     refreshCell(sourceCell.x(), sourceCell.y());
                 }
@@ -131,7 +131,7 @@ void Inventory::mousePressEvent(QMouseEvent *event) {
             }
         }
     } else {
-        QPoint target = this->getIndex(event->pos());
+        QPoint target = getIndex(event->pos());
         if (target.x() >= 0) {
             getCell(target.x(), target.y())->decrease();
             refreshCell(target.x(), target.y());
@@ -211,12 +211,12 @@ void Inventory::refreshCell(int x, int y) {
     DBAdapter *adapter = DBAdapter::getInstance();
     InventoryCell* crCell = getCell(x, y);
     if (nullptr != crCell) {
-        adapter->insertOrUpdateInventory(crCell->getType(),crCell->getCount(),(y*this->rowCount()) + x);
+        adapter->insertOrUpdateInventory(crCell->getType(),crCell->getCount(),(y*rowCount()) + x);
     }
 }
 
 QPoint Inventory::getIndex(QPoint pos) {
-    if ((pos.x() < this->columnCount() * cellWidth + DELTA_X) && (pos.y() < rowCount() * cellHeight + DELTA_Y)) {
+    if ((pos.x() < columnCount() * cellWidth + DELTA_X) && (pos.y() < rowCount() * cellHeight + DELTA_Y)) {
         return QPoint((pos.y() - DELTA_Y)/cellHeight, (pos.x() - DELTA_X)/cellWidth);
     }
     return QPoint(-1, -1);
