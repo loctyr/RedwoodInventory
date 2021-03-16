@@ -38,6 +38,10 @@ InventoryCell* Inventory::getCell(int x, int y) {
 void Inventory::setCell(InventoryCell *cell, int x, int y) {
     delete takeItem(x,y);
     setItem(x, y, cell);
+    if (nullptr != cell) {
+        cell->setEnabled(isEnabled());
+        cell->repaint();
+    }
 }
 
 void Inventory::dragEnterEvent(QDragEnterEvent *event) {
@@ -95,7 +99,7 @@ void Inventory::dropEvent(QDropEvent *event) {
                     InventoryCell* crCell;
                     crCell = getCell(target.x(), target.y());
                     if (nullptr != crCell) {
-                        crCell->adding(new InventoryCell(ItemFactory::createItem(itemType, this), itemCount));
+                        crCell->adding(new InventoryCell(ItemFactory::createItem(itemType, nullptr), itemCount));
                     }
                     refreshCell(target.x(), target.y());
                 }
@@ -135,6 +139,20 @@ void Inventory::mousePressEvent(QMouseEvent *event) {
     }
 }
 
+void Inventory::changeEvent(QEvent *event) {
+    QTableWidget::changeEvent(event);
+    if (event->type() == QEvent::EnabledChange) {
+        for (int i = 0; i < rowCount(); i++) {
+            for (int j = 0; j < columnCount(); j++) {
+                if (nullptr != getCell(i, j)) {
+                    getCell(i, j)->setEnabled(isEnabled());
+                    getCell(i, j)->repaint();
+                }
+            }
+        }
+    }
+}
+
 void Inventory::init() {
     setAcceptDrops(true);
     setDragDropOverwriteMode(true);
@@ -162,8 +180,6 @@ void Inventory::init() {
 
     horizontalHeader()->setVisible(false);
     verticalHeader()->setVisible(false);
-
-    this->loadFromBD();
 }
 
 void Inventory::saveToBD() {
@@ -185,7 +201,7 @@ void Inventory::loadFromBD() {
         QList<ItemRecord> record_list = adapter->getInventory();
 
         for(auto it = record_list.begin(); it != record_list.end(); ++it) {
-            setCell(new InventoryCell(ItemFactory::createItem(it->type, this), it->count), (it->id)%rowCount(), (it->id) / rowCount() );
+            setCell(new InventoryCell(ItemFactory::createItem(it->type, nullptr), it->count), (it->id)%rowCount(), (it->id) / rowCount() );
         }
         repaintAllCells();
     }

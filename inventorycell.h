@@ -34,6 +34,9 @@ public:
      */
     QString getImage();
 
+    bool isEnabled() const;
+    void setEnabled(bool value);
+
     /**
      * @brief isEmpty - is this cell empty?
      * @return - true - if this item empty (count = 0 || item = NULL)
@@ -81,6 +84,7 @@ public:
 private:
     Item* item; //! the item of cell
     int itemCount; //! the count of this item
+    bool enabled = true;
 };
 
 #endif // INVENTORYCELL_H

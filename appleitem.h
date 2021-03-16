@@ -2,7 +2,6 @@
 #define APPLEITEM_H
 
 #include <QObject>
-#include <QtMultimedia/QMediaPlayer>
 #include "item.h"
 
 /**

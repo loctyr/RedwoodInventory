@@ -65,9 +65,11 @@ void InventoryCell::setItem(Item *item_) {
 
 void InventoryCell::repaint() {
     if (item != nullptr)     {
-        QImage *img = new QImage();
-        if (img->load(item->getImagePath())) {
-            setData(Qt::BackgroundColorRole, QPixmap::fromImage(*img));
+        QImage img(item->getImagePath());
+        if (isEnabled()) {
+            setData(Qt::BackgroundColorRole, QPixmap::fromImage(img));
+        } else {
+            setData(Qt::BackgroundColorRole, QPixmap::fromImage(img.convertToFormat(QImage::Format_Grayscale16)));
         }
         if (itemCount > 0) {
             setText(QString::number(itemCount));
@@ -80,13 +82,24 @@ void InventoryCell::repaint() {
     }
 }
 
+bool InventoryCell::isEnabled() const {
+    return enabled;
+}
+
+void InventoryCell::setEnabled(bool value) {
+    if (item != nullptr) {
+        item->setEnabled(value);
+    }
+    enabled = value;
+}
+
 bool InventoryCell::adding(InventoryCell *cell) {
     if (this->getType() == cell->getType()) {
-        this->increase(cell->getCount());
+        increase(cell->getCount());
         cell->itemCount = 0;
         delete cell->item;
         cell->item = nullptr;
-        this->repaint();
+        repaint();
         cell->repaint();
         return true;
     } else {
@@ -94,7 +107,7 @@ bool InventoryCell::adding(InventoryCell *cell) {
             setItem(cell->item);
             itemCount = cell->getCount();
             cell->itemCount = 0;
-            cell->item = NULL;
+            cell->item = nullptr;
             cell->repaint();
             repaint();
             return true;

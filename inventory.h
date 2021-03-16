@@ -104,6 +104,8 @@ protected:
      */
     void mousePressEvent(QMouseEvent *event) override;
 
+    void changeEvent(QEvent *event);
+
 private:
     /**
      * @brief init - Filling inventory

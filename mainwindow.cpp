@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
     }
+    ui->twInventory->loadFromBD();
 }
 
 MainWindow::~MainWindow() {
@@ -47,7 +48,7 @@ void MainWindow::on_exitButton_clicked() {
 void MainWindow::on_pbMainMenu_clicked() {
     setMainMenuGeometry();
     mainMenuWidget->show();
-    this->setEnabled(false);
+    setEnabled(false);
     mainMenuWidget->setEnabled(true);
 }
 
