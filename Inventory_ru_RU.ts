@@ -6,12 +6,12 @@
     <message>
         <location filename="mainmenuwidget.cpp" line="14"/>
         <source>New game</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая игра</translation>
     </message>
     <message>
         <location filename="mainmenuwidget.cpp" line="17"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Выход</translation>
     </message>
 </context>
 <context>
@@ -19,12 +19,12 @@
     <message>
         <location filename="mainwindow.ui" line="17"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>Инвентарь</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="154"/>
         <source>Main menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Главное меню</translation>
     </message>
 </context>
 </TS>
