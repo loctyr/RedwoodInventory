@@ -4,11 +4,10 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
-MainMenuWidget::MainMenuWidget(QWidget *parent): QWidget(parent)
-{
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    this->setAttribute(Qt::WA_TranslucentBackground);
-    this->setAttribute(Qt::WA_UnderMouse);
+MainMenuWidget::MainMenuWidget(QWidget *parent): QWidget(parent) {
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_UnderMouse);
     QHBoxLayout* horizontalLayout = new QHBoxLayout(this);
     horizontalLayout->setMargin(0);
 

@@ -28,10 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
     }
-    ui->twInventory->acceptDrops();
-
-    //QPixmap pixmap(ui->lbApple->getImagePath());
-    //ui->lbApple->setPixmap(pixmap);
 }
 
 MainWindow::~MainWindow() {
@@ -41,6 +37,7 @@ MainWindow::~MainWindow() {
 void MainWindow::on_newGameButton_clicked() {
     mainMenuWidget->close();
     this->setEnabled(true);
+    ui->twInventory->newGame();
 }
 
 void MainWindow::on_exitButton_clicked() {

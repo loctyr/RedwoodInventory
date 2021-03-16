@@ -1,5 +1,24 @@
 #include "dbadapter.h"
+#include <QDebug>
 
+
+/**
+ *  * Description of tables:
+ * ****************
+ *
+ * 1) Table of item types (itemTable)
+ *
+ * 1. VARCHAR(255) type     - Item type;
+ * 2. VARCHAR(255) picture  - Path to image resource;
+ * 3. VARCHAR(255) sound    - Path to sound resource;
+ *
+ * 2) Inventory table (inventory)
+ *
+ * 1. integer      id       - index in inventory;
+ * 2. integer      count    - count of items;
+ * 3. VARCHAR(255) type     - Item type;
+ *
+**/
 DBAdapter* DBAdapter::singleton= nullptr;;
 
 DBAdapter::DBAdapter() {
@@ -19,33 +38,27 @@ DBAdapter *DBAdapter::getInstance() {
 }
 
 DBAdapter::~DBAdapter() {
-    if (this->isOpen()) {
-        this->close();
-    }
-}
-
-void DBAdapter::close() {
-    if (this->isOpen()) {
-        this->sqliteDataBase.close();
+    if (isOpen()) {
+        sqliteDataBase.close();
         QSqlDatabase::removeDatabase("QSQLITE");
     }
 }
 
 bool DBAdapter::isOpen() {
-    return this->sqliteDataBase.isOpen();
+    return sqliteDataBase.isOpen();
 }
 
 void DBAdapter::init() {
     QSqlQuery query = QSqlQuery(sqliteDataBase);
-    query.exec("CREATE TABLE IF NOT EXISTS itemTable (picture VARCHAR(255), type VARCHAR(255) NOT NULL, sound VARCHAR(255), PRIMARY KEY(type))");
-    query.exec("CREATE TABLE IF NOT EXISTS inventoryTable (id INTEGER PRIMARY KEY, count INTEGER, type VARCHAR(255), FOREIGN KEY(type) REFERENCES itemTable(type))");
-    query.exec("INSERT INTO itemTable (picture, type, sound) VALUES (\":/images/apple.jpg\", \"Apple\", \":/sound/apple.mp3\");");
+    query.exec("CREATE TABLE IF NOT EXISTS item (type VARCHAR(255) NOT NULL, picture VARCHAR(255), sound VARCHAR(255), PRIMARY KEY(type))");
+    query.exec("CREATE TABLE IF NOT EXISTS inventory (id INTEGER PRIMARY KEY, count INTEGER, type VARCHAR(255), FOREIGN KEY(type) REFERENCES item(type))");
+    query.exec("INSERT INTO item (picture, type, sound) VALUES (\":/images/apple.jpg\", \"Apple\", \"qrc:/sound/apple.mp3\");");
 }
 
 QString DBAdapter::getSoundPath(QString type) {
     DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
-    query.exec("SELECT sound from itemTable WHERE type = \'" + type + "\';");
+    query.exec("SELECT sound from item WHERE type = \'" + type + "\';");
     QString soundPath;
     if (query.first()) {
         soundPath = query.value("sound").toString();
@@ -56,7 +69,7 @@ QString DBAdapter::getSoundPath(QString type) {
 QString DBAdapter::getImagePath(QString type) {
     DBAdapter* adapter = DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
-    query.exec("SELECT picture FROM itemTable WHERE type = \'" + type + "\';");
+    query.exec("SELECT picture FROM item WHERE type = \'" + type + "\';");
     QString imagePath;
     if (query.first()) {
         imagePath = query.value("picture").toString();
@@ -69,7 +82,7 @@ QStringList DBAdapter::getAllItemTypes() {
 
     DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
-    query.exec("SELECT type from itemTable;");
+    query.exec("SELECT type from item;");
     while(query.next()) {
         list.append(query.value("type").toString());
     }
@@ -80,7 +93,8 @@ QList<ItemRecord> DBAdapter::getInventory() {
     QList<ItemRecord> result;
     DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase) ;
-    if (query.exec("SELECT id, type, count FROM inventoryTable")) {
+    if (!query.exec("SELECT id, type, count FROM inventory;")) {
+        qDebug() << query.lastError().text();
         return result;
     }
     while (query.next()) {
@@ -93,9 +107,11 @@ QList<ItemRecord> DBAdapter::getInventory() {
 bool DBAdapter::insertOrUpdateInventory(QString type, int count, int id) {
     DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase) ;
-    if (!query.exec("UPDATE inventoryTable SET type = \'" + type + "\', count = " + QString::number(count) + "\' WHERE id = " + QString::number(id) + ";")) {
-        if (!query.exec("INSERT INTO inventoryTable (id, type, count) VALUES (" + QString::number(id) + ", \'" + type + "\', " + QString::number(count) + ");")) {
-            return false;
-        }
+
+    QString queryText = "INSERT or REPLACE INTO inventory (id, type, count) VALUES (" + QString::number(id) + ", \'" + type + "\', " + QString::number(count) + ");";
+    if (!query.exec(queryText)) {
+        qDebug() << query.lastError().text();
+        return false;
     }
+    return true;
 }

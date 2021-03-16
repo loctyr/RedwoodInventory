@@ -2,7 +2,7 @@
 #include "dbadapter.h"
 
 Item::Item(QString type_, QWidget *parent) : QLabel(parent), type(type_) {
-    setPixmap(QPixmap(getImagePath()));//устанавливаем тут поскольку в конструкторе базового класса getImagePath еще недоступна
+    setPixmap(QPixmap(getImagePath()));
 }
 
 QString Item::getType() {

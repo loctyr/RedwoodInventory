@@ -5,10 +5,19 @@
 class Item;
 class QWidget;
 
+/**
+ * @brief The ItemFactory class - factory to produce items by type name
+ */
 class ItemFactory {
     ItemFactory() = delete;
 public:
-    static Item* createItem(QString name, QWidget *parent);
+    /**
+     * @brief createItem - create item by type name
+     * @param name - type of item
+     * @param parent - the parent Widget
+     * @return - pointer to created item
+     */
+    static Item* createItem(QString type, QWidget *parent);
 };
 
 #endif // ITEMFACTORY_H

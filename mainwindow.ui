@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1292</width>
-    <height>600</height>
+    <width>636</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -35,16 +35,21 @@
      </spacer>
     </item>
     <item>
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="acceptDrops">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="Inventory" name="twInventory">
+        <property name="minimumSize">
+         <size>
+          <width>310</width>
+          <height>310</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>310</width>
+          <height>310</height>
+         </size>
+        </property>
         <property name="rowCount">
          <number>3</number>
         </property>
@@ -189,7 +194,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1292</width>
+     <width>636</width>
      <height>21</height>
     </rect>
    </property>
