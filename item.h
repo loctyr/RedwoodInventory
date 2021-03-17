@@ -12,6 +12,7 @@ public:
      * @param type_ - type of item
      */
     explicit Item(QString type_);
+    virtual ~Item();
 
     /**
      * @brief getType - method for getting type of inventory object

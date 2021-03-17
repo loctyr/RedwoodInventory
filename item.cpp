@@ -7,6 +7,9 @@ Item::Item(QString type_) : type(type_) {
     soundPath = adapter->getSoundPath(getType());
 }
 
+Item::~Item() {
+}
+
 QString Item::getType() {
     return type;
 }

@@ -78,7 +78,7 @@ void InventoryCell::repaint() {
         }
     } else {
         setText("");
-        setBackgroundColor(QColor(255, 255, 255, 0));
+        setBackground(QColor(255, 255, 255, 0));
     }
 }
 
