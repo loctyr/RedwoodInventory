@@ -15,6 +15,7 @@ SOURCES += \
     inventorycell.cpp \
     item.cpp \
     itemfactory.cpp \
+    itemlabel.cpp \
     itemrecord.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     inventorycell.h \
     item.h \
     itemfactory.h \
+    itemlabel.h \
     itemrecord.h \
     mainwindow.h \
     mainmenuwidget.h

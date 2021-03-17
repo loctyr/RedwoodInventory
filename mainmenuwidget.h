@@ -27,6 +27,11 @@ signals:
      * @brief exitSignal - the signal of exit game
      */
     void exitSignal();
+
+    /**
+     * @brief closeSignal - the signal of close menu
+     */
+    void closeSignal();
 };
 
 #endif // MAIN_MENU_WIDGET_H

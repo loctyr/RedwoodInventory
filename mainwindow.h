@@ -33,6 +33,11 @@ public slots:
      */
     void on_exitButton_clicked();
 
+    /**
+     * @brief on_closeButton_clicked - the slot of button ("X") from mainMenuWidget
+     */
+    void on_closeButton_clicked();
+
 private slots:
     /**
      * @brief on_mainMenuButton_clicked - the slot of button ("Main menu")

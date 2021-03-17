@@ -2,8 +2,8 @@
 #include "itemfactory.h"
 #include "dbadapter.h"
 
-#define DELTA_X 0
-#define DELTA_Y 0
+const int delta_x = 0;
+const int delta_y = 0;
 const int cellHeight = 100;
 const int cellWidth  = 100;
 
@@ -61,13 +61,13 @@ void Inventory::dragMoveEvent(QDragMoveEvent *event) {
     for (int i = 0; i < columnCount(); i++) {
         for (int j = 0; j < rowCount(); j++) {
             if (item(i,j)) {
-                item(i,j)->setBackgroundColor(Qt::white);
+                item(i,j)->setBackground(Qt::white);
             }
         }
     }
     repaintAllCells();
     if (target.x() >= 0) {
-        getCell(target.x(), target.y())->setBackgroundColor(QColor(100, 100, 255, 100));
+        getCell(target.x(), target.y())->setBackground(QColor(100, 100, 255, 100));
     }
 }
 
@@ -99,7 +99,7 @@ void Inventory::dropEvent(QDropEvent *event) {
                     InventoryCell* crCell;
                     crCell = getCell(target.x(), target.y());
                     if (nullptr != crCell) {
-                        crCell->adding(new InventoryCell(ItemFactory::createItem(itemType, nullptr), itemCount));
+                        crCell->adding(new InventoryCell(ItemFactory::createItem(itemType), itemCount));
                     }
                     refreshCell(target.x(), target.y());
                 }
@@ -118,17 +118,19 @@ void Inventory::mousePressEvent(QMouseEvent *event) {
         QByteArray itemData;
         QDataStream dataStream(&itemData, QIODevice::WriteOnly);
         QPoint target = getIndex(event->pos());
+        InventoryCell* crCell = getCell(target.x(), target.y());
+        if (nullptr == crCell) return;
+        if (crCell->isEmpty()) return;
         if (target.x() >= 0) {
             dataStream << QString("from inventory") << target;
-            QMimeData *mimeData = new QMimeData;
+            QMimeData* mimeData = new QMimeData;
             mimeData->setData("text/csv", itemData);
 
-            QDrag *drag = new QDrag(this);
-            drag->setPixmap(QPixmap(getCell(target.x(), target.y())->getImage()));
-            drag->setMimeData(mimeData);
+            QDrag drag(this);
+            drag.setPixmap(QPixmap(getCell(target.x(), target.y())->getImage()));
+            drag.setMimeData(mimeData);
 
-            if (!(drag->exec(Qt::MoveAction) == Qt::MoveAction)) {
-            }
+            drag.exec(Qt::MoveAction);
         }
     } else {
         QPoint target = getIndex(event->pos());
@@ -201,7 +203,7 @@ void Inventory::loadFromBD() {
         QList<ItemRecord> record_list = adapter->getInventory();
 
         for(auto it = record_list.begin(); it != record_list.end(); ++it) {
-            setCell(new InventoryCell(ItemFactory::createItem(it->type, nullptr), it->count), (it->id)%rowCount(), (it->id) / rowCount() );
+            setCell(new InventoryCell(ItemFactory::createItem(it->type), it->count), (it->id)%rowCount(), (it->id) / rowCount() );
         }
         repaintAllCells();
     }
@@ -216,8 +218,8 @@ void Inventory::refreshCell(int x, int y) {
 }
 
 QPoint Inventory::getIndex(QPoint pos) {
-    if ((pos.x() < columnCount() * cellWidth + DELTA_X) && (pos.y() < rowCount() * cellHeight + DELTA_Y)) {
-        return QPoint((pos.y() - DELTA_Y)/cellHeight, (pos.x() - DELTA_X)/cellWidth);
+    if ((pos.x() < columnCount() * cellWidth + delta_x) && (pos.y() < rowCount() * cellHeight + delta_y)) {
+        return QPoint((pos.y() - delta_x)/cellHeight, (pos.x() - delta_y)/cellWidth);
     }
     return QPoint(-1, -1);
 }

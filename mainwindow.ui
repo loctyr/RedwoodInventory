@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>400</height>
+    <height>429</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -18,22 +18,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <spacer name="verticalSpacer_4">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Minimum</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>25</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item>
      <widget class="QPushButton" name="pbMainMenu">
       <property name="text">

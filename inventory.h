@@ -104,7 +104,7 @@ protected:
      */
     void mousePressEvent(QMouseEvent *event) override;
 
-    void changeEvent(QEvent *event);
+    void changeEvent(QEvent *event) override;
 
 private:
     /**

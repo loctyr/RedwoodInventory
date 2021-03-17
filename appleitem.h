@@ -1,7 +1,6 @@
 #ifndef APPLEITEM_H
 #define APPLEITEM_H
 
-#include <QObject>
 #include "item.h"
 
 /**
@@ -12,9 +11,8 @@ class AppleItem : public Item {
 public:
     /**
      * @brief AppleItem - create AppleItem - new Label with Apple
-     * @param parent - the parent widget
      */
-    AppleItem(QWidget* parent = nullptr);
+    AppleItem();
 
     /**
      * @brief removeAction - the action, that was performed when apple was used in Incentory (right mouse button). Played sound of apple.

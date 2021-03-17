@@ -67,7 +67,7 @@ QString DBAdapter::getSoundPath(QString type) {
 }
 
 QString DBAdapter::getImagePath(QString type) {
-    DBAdapter* adapter = DBAdapter::getInstance();
+    DBAdapter::getInstance();
     QSqlQuery query(sqliteDataBase);
     query.exec("SELECT picture FROM item WHERE type = \'" + type + "\';");
     QString imagePath;

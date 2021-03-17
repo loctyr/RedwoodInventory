@@ -4,6 +4,7 @@
 #include "dbadapter.h"
 #include "itemfactory.h"
 #include "item.h"
+#include "itemlabel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,9 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    mainMenuWidget = new MainMenuWidget(this);
+    mainMenuWidget = new MainMenuWidget(centralWidget());
     connect(mainMenuWidget, &MainMenuWidget::newGameSignal, this, &MainWindow::on_newGameButton_clicked);
     connect(mainMenuWidget, &MainMenuWidget::exitSignal, this, &MainWindow::on_exitButton_clicked);
+    connect(mainMenuWidget, &MainMenuWidget::closeSignal, this, &MainWindow::on_closeButton_clicked);
 
     setAcceptDrops(true);
     on_pbMainMenu_clicked();
@@ -21,11 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     DBAdapter* adapter = DBAdapter::getInstance();
     QStringList typeList = adapter->getAllItemTypes();
     for(auto& type : typeList) {
-        Item* ptr = ItemFactory::createItem(type, ui->wRight);
-        if (nullptr != ptr) {
-            if (nullptr != ui->wRight->layout()) {
-                ui->wRight->layout()->addWidget(ptr);
-            }
+        ItemLabel* ptr = new ItemLabel(ItemFactory::createItem(type), ui->wRight);
+        if ((nullptr != ptr) && (nullptr != ui->wRight->layout()) ) {
+            ui->wRight->layout()->addWidget(ptr);
         }
     }
     ui->twInventory->loadFromBD();
@@ -43,6 +43,11 @@ void MainWindow::on_newGameButton_clicked() {
 
 void MainWindow::on_exitButton_clicked() {
     close();
+}
+
+void MainWindow::on_closeButton_clicked() {
+    mainMenuWidget->close();
+    setEnabled(true);
 }
 
 void MainWindow::on_pbMainMenu_clicked() {

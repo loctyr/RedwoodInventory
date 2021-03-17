@@ -1,8 +1,7 @@
 #include "appleitem.h"
 #include <QtMultimedia/QMediaPlayer>
 
-AppleItem::AppleItem(QWidget* parent) : Item("Apple", parent) {
-    setAttribute(Qt::WA_DeleteOnClose);
+AppleItem::AppleItem() : Item("Apple") {
 }
 
 void AppleItem::removeAction() {

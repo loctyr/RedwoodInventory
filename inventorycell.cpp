@@ -87,9 +87,6 @@ bool InventoryCell::isEnabled() const {
 }
 
 void InventoryCell::setEnabled(bool value) {
-    if (item != nullptr) {
-        item->setEnabled(value);
-    }
     enabled = value;
 }
 

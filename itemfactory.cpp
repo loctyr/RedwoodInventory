@@ -1,9 +1,9 @@
 #include "itemfactory.h"
 #include "appleitem.h"
 
-Item *ItemFactory::createItem(QString type, QWidget* parent = nullptr) {
+Item *ItemFactory::createItem(QString type) {
     if (0 == type.compare("Apple")) {
-        return new AppleItem(parent);
+        return new AppleItem();
     }
     return nullptr;
 }

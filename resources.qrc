@@ -5,6 +5,9 @@
     <qresource prefix="/images">
         <file>apple.jpg</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>btn_close.png</file>
+    </qresource>
     <qresource lang="ru" prefix="/i18n"/>
     <qresource prefix="/i18n">
         <file>Inventory_ru_RU.qm</file>

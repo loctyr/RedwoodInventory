@@ -14,10 +14,9 @@ public:
     /**
      * @brief createItem - create item by type name
      * @param name - type of item
-     * @param parent - the parent Widget
      * @return - pointer to created item
      */
-    static Item* createItem(QString type, QWidget *parent);
+    static Item* createItem(QString type);
 };
 
 #endif // ITEMFACTORY_H
